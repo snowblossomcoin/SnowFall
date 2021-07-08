@@ -25,6 +25,10 @@ jobs:
       - name: Install Dependencies
         run: yum install -y make glibc-devel ${{ matrix.compiler }}
 
+      - name: Install Centos 7 LLVM/Clang Dependencies
+        if: ${{ matrix.image == 'centos:7' && matrix.compiler == 'clang' }}
+        run: yum install -y compat-gcc-44
+
       - name: Make
         env:
           CC: ${{ matrix.compiler }}
