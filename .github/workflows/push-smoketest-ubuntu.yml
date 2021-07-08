@@ -32,7 +32,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           apt-get update -qq
-          apt-get install -qq make ${{ matrix.compiler }}
+          apt-get install -qq make binutils ${{ matrix.compiler }}
 
       - name: Make
         env:
