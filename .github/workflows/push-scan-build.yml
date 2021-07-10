@@ -1,0 +1,30 @@
+name: LLVM scan-build
+on: push
+
+jobs:
+  llvm-scan-build:
+    runs-on: ubuntu-20.04
+
+    container:
+      image: debian:bullseye
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          apt-get update -qq
+          apt-get install -qq make gcc clang-tools libfindbin-libs-perl
+
+      - name: LLVM scan-build
+        run:  scan-build --status-bugs -o results/ make
+
+      - name: Publish LLVM scan-build results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: llvm-scan-build-results
+          path: results/
